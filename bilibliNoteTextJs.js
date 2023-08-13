@@ -6,9 +6,7 @@
 // @match        https://www.bilibili.com/medialist/*
 // @icon         https://static.hdslb.com/images/favicon.ico
 // @grant        none
-// @description  2023-6.13:更新--》alt + 1 2 3 4 5放大的选中的文字，并加粗。按第二次，加粗失效，但是放大不会失效；
-//               alt+f:选择文字变灰  alt+d:选择文字变黑  alt+g:选择文字变绿  alt+b:选择文字变蓝 alt+r:选择文字变红 alt+y:选择文字变黄
-//               2023-08-12:更新：alt+双击f:选择文字高亮变灰  alt+双击d:选择文字高亮变黑  alt+双击g:选择文字高亮变绿  alt+双击b:选择文字高亮变蓝 alt+双击r:选择文字高亮变红 alt+双击y:选择文字高亮变黄
+// @description  2023-6.13:更新--》alt + 1 2 3 4 5放大的选中的文字，并加粗。按第二次，加粗失效，但是放大不会失效；alt+f:选择文字变灰  alt+d:选择文字变黑  alt+g:选择文字变绿  alt+b:选择文字变蓝 alt+r:选择文字变红 alt+y:选择文字变黄 2023-08-12:更新：alt+双击f:选择文字高亮变灰  alt+双击d:选择文字高亮变黑  alt+双击g:选择文字高亮变绿  alt+双击b:选择文字高亮变蓝 alt+双击r:选择文字高亮变红 alt+双击y:选择文字高亮变黄
 // @version 1.2
 // ==/UserScript==
 
@@ -162,6 +160,17 @@
             lastKeyPressTime = currentTime;
         }
 
+        if (event.altKey && (event.key === 'z' || event.key === 'Z')) {
+            event.preventDefault();
+            const currentTime = new Date().getTime();
+            if (currentTime - lastKeyPressTime <= doubleClickThreshold) {
+                // 触发 Alt + 双击R键 事件
+                heightCancle();
+
+            }
+            lastKeyPressTime = currentTime;
+        }
+
 
         var videoElement = document.querySelector('video');
 
@@ -227,7 +236,7 @@
 
     //高亮红
     function heightRed() {
-        const parentElement = document.getElementById('ql-picker-options-2');
+        var parentElement = document.querySelector('[labeltooltip="文本高亮"]');
         const element = parentElement.querySelector('.ql-picker-item[data-value="#ee230d"]');
         if (element) {
             element.click();
@@ -235,7 +244,7 @@
     }
 
     function heightGreen() {
-        const parentElement = document.getElementById('ql-picker-options-2');
+        var parentElement = document.querySelector('[labeltooltip="文本高亮"]');
         const element = parentElement.querySelector('.ql-picker-item[data-value="#1db100"]');
         if (element) {
             element.click();
@@ -243,7 +252,7 @@
     }
 
     function heightBlack() {
-        const parentElement = document.getElementById('ql-picker-options-2');
+        var parentElement = document.querySelector('[labeltooltip="文本高亮"]');
         const element = parentElement.querySelector('.ql-picker-item[data-value="#000000"]');
         if (element) {
             element.click();
@@ -251,7 +260,7 @@
     }
 
     function heightYellow() {
-        const parentElement = document.getElementById('ql-picker-options-2');
+        var parentElement = document.querySelector('[labeltooltip="文本高亮"]');
         const element = parentElement.querySelector('.ql-picker-item[data-value="#fbe231"]');
         if (element) {
             element.click();
@@ -259,7 +268,7 @@
     }
 
     function heightBlue() {
-        const parentElement = document.getElementById('ql-picker-options-2');
+        var parentElement = document.querySelector('[labeltooltip="文本高亮"]');
         const element = parentElement.querySelector('.ql-picker-item[data-value="#0b84ed"]');
         if (element) {
             element.click();
@@ -267,8 +276,16 @@
     }
 
     function heightF() {
-        const parentElement = document.getElementById('ql-picker-options-2');
+        var parentElement = document.querySelector('[labeltooltip="文本高亮"]');
         const element = parentElement.querySelector('.ql-picker-item[data-value="#a5a5a5"]');
+        if (element) {
+            element.click();
+        }
+    }
+
+    function heightCancle() {
+        var parentElement = document.querySelector('[labeltooltip="文本高亮"]');
+        const element = parentElement.querySelector('.ql-picker-item[data-value="#ffffff"]');
         if (element) {
             element.click();
         }
