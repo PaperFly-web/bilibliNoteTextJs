@@ -1,15 +1,15 @@
 // ==UserScript==
-// @name         哔哩哔哩笔记/B站笔记/哔站笔记/bilibli笔记，选中文字放大加粗、添加颜色
+// @name         B站笔记快捷键：alt + ?
 // @namespace    https://space.bilibili.com/391912695  https://github.com/PaperFly-web/
 // @author       PaperFly
 // @match        http*://www.bilibili.com/video/*
 // @match        https://www.bilibili.com/medialist/*
 // @icon         https://static.hdslb.com/images/favicon.ico
 // @grant        none
-// @description  2023-6.13:更新--》alt + 1 2 3 4 5放大的选中的文字，并加粗。按第二次，加粗失效，但是放大不会失效；alt+f:选择文字变灰  alt+d:选择文字变黑  alt+g:选择文字变绿  alt+b:选择文字变蓝 alt+r:选择文字变红 alt+y:选择文字变黄 2023-08-12:更新：alt+双击f:选择文字高亮变灰  alt+双击d:选择文字高亮变黑  alt+双击g:选择文字高亮变绿  alt+双击b:选择文字高亮变蓝 alt+双击r:选择文字高亮变红 alt+双击y:选择文字高亮变黄
-// @version 1.2
+// @description  alt + 1 2 3 4 5放大加粗，alt+f:选择文字变灰，alt+d:选择文字变黑，alt+g:选择文字变绿，alt+b:选择文字变蓝，alt+r:选择文字变红，alt+y:选择文字变黄，alt+双击f:选择文字高亮变灰，alt+双击d:选择文字高亮变黑，alt+双击g:选择文字高亮变绿，alt+双击b:选择文字高亮变蓝，alt+双击r:选择文字高亮变红，alt+双击y:选择文字高亮变黄，alt+双击z:取消高亮，alt+w:选中文字变白，alt+L:光标所在文字无序列表，alt+shit+L:光标所在文字有序列表
+// @version 1.2.3.1
 // ==/UserScript==
-
+ 
 (function() {
     let timerId = null;
     let lastKeyPressTime = 0;
@@ -40,14 +40,14 @@
                     sizeElement3.click();
                 }
             }
-
+ 
             if (event.key === '4') {
                 var sizeElement4 = document.querySelector('span.ql-picker-item[data-value="18px"][data-label="18"]');
                 if (sizeElement4) {
                     sizeElement4.click();
                 }
             }
-
+ 
             if (event.key === '5') {
                 var sizeElement5 = document.querySelector('span.ql-picker-item[data-value="17px"][data-label="17"]');
                 if (sizeElement5) {
@@ -55,7 +55,12 @@
                 }
             }
         }
-
+        if (event.altKey && (event.key === 'w' || event.key === 'W')) {
+            event.preventDefault();
+            fontWhite();
+ 
+ 
+        }
         if (event.altKey && (event.key === 'r' || event.key === 'R')) {
             event.preventDefault();
             const currentTime = new Date().getTime();
@@ -67,12 +72,12 @@
                     clearTimeout(timerId);
                 }
             } else {
-
+ 
                 timerId = setTimeout(fontRed, doubleClickThreshold);
             }
             lastKeyPressTime = currentTime;
-
-
+ 
+ 
         }
         if (event.altKey && (event.key === 'd' || event.key === 'D')) {
             event.preventDefault();
@@ -85,12 +90,12 @@
                     clearTimeout(timerId);
                 }
             } else {
-
+ 
                 timerId = setTimeout(fontBlack, doubleClickThreshold);
             }
             lastKeyPressTime = currentTime;
         }
-
+ 
         if (event.altKey && (event.key === 'b' || event.key === 'B')) {
             event.preventDefault();
             const currentTime = new Date().getTime();
@@ -102,15 +107,15 @@
                     clearTimeout(timerId);
                 }
             } else {
-
+ 
                 timerId = setTimeout(fontBlue, doubleClickThreshold);
             }
             lastKeyPressTime = currentTime;
         }
-
+ 
         if (event.altKey && (event.key === 'g' || event.key === 'G')) {
             event.preventDefault();
-
+ 
             const currentTime = new Date().getTime();
             if (currentTime - lastKeyPressTime <= doubleClickThreshold) {
                 // 触发 Alt + 双击R键 事件
@@ -120,12 +125,12 @@
                     clearTimeout(timerId);
                 }
             } else {
-
+ 
                 timerId = setTimeout(fontGreen, doubleClickThreshold);
             }
             lastKeyPressTime = currentTime;
         }
-
+ 
         if (event.altKey && (event.key === 'y' || event.key === 'Y')) {
             event.preventDefault();
             const currentTime = new Date().getTime();
@@ -137,12 +142,12 @@
                     clearTimeout(timerId);
                 }
             } else {
-
+ 
                 timerId = setTimeout(fontYellow, doubleClickThreshold);
             }
             lastKeyPressTime = currentTime;
         }
-
+ 
         if (event.altKey && (event.key === 'f' || event.key === 'F')) {
             event.preventDefault();
             const currentTime = new Date().getTime();
@@ -154,39 +159,57 @@
                     clearTimeout(timerId);
                 }
             } else {
-
+ 
                 timerId = setTimeout(fontF, doubleClickThreshold);
             }
             lastKeyPressTime = currentTime;
         }
-
+ 
         if (event.altKey && (event.key === 'z' || event.key === 'Z')) {
             event.preventDefault();
             const currentTime = new Date().getTime();
             if (currentTime - lastKeyPressTime <= doubleClickThreshold) {
                 // 触发 Alt + 双击R键 事件
                 heightCancle();
-
+ 
             }
             lastKeyPressTime = currentTime;
         }
-
-
+ 
+ 
         var videoElement = document.querySelector('video');
-
+ 
         if (event.altKey && event.key === 'c') {
-
+ 
             videoElement.playbackRate += 0.1;
             showVideoSpeed()
-
+ 
         }
-
+ 
         if (event.altKey && event.key === 'x') {
             videoElement.playbackRate -= 0.1;
             showVideoSpeed()
         }
-
+ 
+        //无序列表
+        if (event.altKey && (event.key === 'l' || event.key === 'L')) {
+            event.preventDefault();
+            unordered();
+        }
+ 
+        //有序列表
+        if (event.shiftKey && event.altKey && (event.key === 'l' || event.key === 'L')) {
+            event.preventDefault();
+            ordered();
+        }
+ 
     });
+    function fontWhite() {
+        var elementd = document.querySelector('.ql-picker-item[data-value="#ffffff"]');
+        if (elementd) {
+            elementd.click();
+        }
+    }
     //文字黑色
     function fontBlack() {
         var elementd = document.querySelector('.ql-picker-item.ql-primary[data-value="#000000"]');
@@ -197,7 +220,7 @@
     //文字绿色
     function fontGreen() {
         var elementg = document.querySelector('span.ql-picker-item[data-value="#1db100"]');
-
+ 
         if (elementg) {
             elementg.click();
         }
@@ -205,7 +228,7 @@
     //文字蓝色
     function fontBlue() {
         var elementb = document.querySelector('span.ql-picker-item[data-value="#0b84ed"]');
-
+ 
         if (elementb) {
             elementb.click();
         }
@@ -220,7 +243,7 @@
     //文字黄色
     function fontYellow() {
         var elementy = document.querySelector('span.ql-picker-item[data-value="#fbe231"]');
-
+ 
         if (elementy) {
             elementy.click();
         }
@@ -232,8 +255,8 @@
             elementf.click();
         }
     }
-
-
+ 
+ 
     //高亮红
     function heightRed() {
         var parentElement = document.querySelector('[labeltooltip="文本高亮"]');
@@ -242,7 +265,7 @@
             element.click();
         }
     }
-
+ 
     function heightGreen() {
         var parentElement = document.querySelector('[labeltooltip="文本高亮"]');
         const element = parentElement.querySelector('.ql-picker-item[data-value="#1db100"]');
@@ -250,7 +273,7 @@
             element.click();
         }
     }
-
+ 
     function heightBlack() {
         var parentElement = document.querySelector('[labeltooltip="文本高亮"]');
         const element = parentElement.querySelector('.ql-picker-item[data-value="#000000"]');
@@ -258,7 +281,7 @@
             element.click();
         }
     }
-
+ 
     function heightYellow() {
         var parentElement = document.querySelector('[labeltooltip="文本高亮"]');
         const element = parentElement.querySelector('.ql-picker-item[data-value="#fbe231"]');
@@ -266,7 +289,7 @@
             element.click();
         }
     }
-
+ 
     function heightBlue() {
         var parentElement = document.querySelector('[labeltooltip="文本高亮"]');
         const element = parentElement.querySelector('.ql-picker-item[data-value="#0b84ed"]');
@@ -274,7 +297,7 @@
             element.click();
         }
     }
-
+ 
     function heightF() {
         var parentElement = document.querySelector('[labeltooltip="文本高亮"]');
         const element = parentElement.querySelector('.ql-picker-item[data-value="#a5a5a5"]');
@@ -282,7 +305,7 @@
             element.click();
         }
     }
-
+ 
     function heightCancle() {
         var parentElement = document.querySelector('[labeltooltip="文本高亮"]');
         const element = parentElement.querySelector('.ql-picker-item[data-value="#ffffff"]');
@@ -290,30 +313,48 @@
             element.click();
         }
     }
-
+ 
+    //无序列表
+    function unordered() {
+        var parentElement = document.querySelector('[labeltooltip="无序列表"]');
+        const element = parentElement.querySelector('.icon');
+        if (element) {
+            element.click();
+        }
+    }
+ 
+    //有序列表
+    function ordered() {
+        var parentElement = document.querySelector('[labeltooltip="有序列表"]');
+        const element = parentElement.querySelector('.icon');
+        if (element) {
+            element.click();
+        }
+    }
+ 
     function bold() {
-
+ 
         // 通过class找到元素
         var elements = document.getElementsByClassName('ql-bold');
-
+ 
         // 如果有多个元素符合条件，可以遍历它们
         for (var i = 0; i < elements.length; i++) {
             var element = elements[i];
-
+ 
             // 模拟点击事件
             var clickEvent = new MouseEvent('click', {
                 'view': window,
                 'bubbles': true,
                 'cancelable': true
             });
-
+ 
             element.dispatchEvent(clickEvent);
         }
     }
-
+ 
     function showVideoSpeed() {
         var videoElement = document.querySelector('video');
-
+ 
         // 创建用于显示速度的元素
         var speedDisplayElement = document.createElement('div');
         speedDisplayElement.style.position = 'absolute';
@@ -325,38 +366,38 @@
         speedDisplayElement.style.fontWeight = 'bold';
         speedDisplayElement.style.transition = 'opacity 0.3s';
         speedDisplayElement.style.opacity = '0';
-
+ 
         // 将速度显示元素添加到视频元素的父级容器中
         videoElement.parentElement.appendChild(speedDisplayElement);
-
+ 
         // 更新速度显示
         function updateSpeedDisplay() {
             speedDisplayElement.textContent = videoElement.playbackRate.toFixed(1) + 'x';
             speedDisplayElement.style.opacity = '1';
-
+ 
             // 0.5秒后隐藏速度显示
             setTimeout(function() {
                 speedDisplayElement.style.opacity = '0';
             }, 500);
         }
-
+ 
         // 监听视频播放速度变化
         videoElement.addEventListener('ratechange', updateSpeedDisplay);
-
+ 
         // 初始化速度显示
         updateSpeedDisplay();
     }
-
+ 
     function simulateShiftHome() {
         // 创建一个 KeyboardEvent 对象
         var event = new KeyboardEvent('keydown', {
             shiftKey: true,
             keyCode: 36
         });
-
+ 
         // 触发事件
         document.dispatchEvent(event);
     }
-
-
+ 
+ 
 })();
